@@ -225,7 +225,6 @@ static void tp_touch_down(struct touchpanel_data *ts, struct point_info points, 
         input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, points.z);
     } else {
         if (touch_report_num == 1) {
-            input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, points.width_major);
             last_width_major = points.width_major;
         } else if(!(touch_report_num & 0x7f) || touch_report_num == 30) {	//avoid same point info getevent cannot report
             //if touch_report_num == 127, every 127 points, change width_major
@@ -236,7 +235,6 @@ static void tp_touch_down(struct touchpanel_data *ts, struct point_info points, 
             } else {
                 last_width_major = points.width_major;
             }
-            input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, last_width_major);
         }
         if (ts->smart_gesture_support && (points.touch_major > 0x12) &&\
             (points.x > ts->touch_major_limit.width_range) && (points.x < ts->resolution_info.max_x - ts->touch_major_limit.width_range) &&\
@@ -3697,7 +3695,6 @@ static int init_input_device(struct touchpanel_data *ts)
     set_bit(EV_ABS, ts->input_dev->evbit);
     set_bit(EV_KEY, ts->input_dev->evbit);
     set_bit(ABS_MT_TOUCH_MAJOR, ts->input_dev->absbit);
-    set_bit(ABS_MT_WIDTH_MAJOR, ts->input_dev->absbit);
     set_bit(ABS_MT_POSITION_X, ts->input_dev->absbit);
     set_bit(ABS_MT_POSITION_Y, ts->input_dev->absbit);
     set_bit(INPUT_PROP_DIRECT, ts->input_dev->propbit);
